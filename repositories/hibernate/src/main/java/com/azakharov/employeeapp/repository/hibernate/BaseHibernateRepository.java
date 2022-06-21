@@ -1,0 +1,65 @@
+package com.azakharov.employeeapp.repository.hibernate;
+
+import com.azakharov.employeeapp.repository.jpa.RepositoryException;
+import org.hibernate.Session;
+
+import java.util.List;
+import java.util.Optional;
+
+public abstract class BaseHibernateRepository<E, ID> {
+
+    protected final Session session;
+
+    private final Class<E> entityClass;
+
+    public BaseHibernateRepository(final Session session,
+                                   final Class<E> entityClass) {
+        this.session = session;
+        this.entityClass = entityClass;
+    }
+
+    protected List<E> findAll() {
+        final var criteriaBuilder = session.getCriteriaBuilder();
+        final var query = criteriaBuilder.createQuery(entityClass);
+        final var rootEntry = query.from(entityClass);
+        final var selectAllQuery = query.select(rootEntry);
+
+        return session.createQuery(selectAllQuery).getResultList();
+    }
+
+    protected Optional<E> find(ID id) {
+        return Optional.ofNullable(session.find(entityClass, id));
+    }
+
+    protected E save(E entity) {
+        return upsert(entity);
+    }
+
+    protected E update(E entity) {
+        return upsert(entity);
+    }
+
+    protected void delete(ID id) {
+        find(id).ifPresentOrElse(this::processDelete, processDeletingFailing(id));
+    }
+
+    private E upsert(E entity) {
+        session.getTransaction().begin();
+        final var saved = session.merge(entity);
+        session.getTransaction().commit();
+
+        return saved;
+    }
+
+    private void processDelete(final E entity) {
+        session.getTransaction().begin();
+        session.remove(entity);
+        session.getTransaction().commit();
+    }
+
+    private Runnable processDeletingFailing(ID id) {
+        return () -> {
+            throw new RepositoryException("Entity with id {0} wasn''t found for deleting in database", id);
+        };
+    }
+}

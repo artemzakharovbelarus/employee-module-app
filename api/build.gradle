@@ -1,0 +1,4 @@
+group 'com.azakharov.employeeapp.api'
+version '1.0.0'
+
+dependencies { }

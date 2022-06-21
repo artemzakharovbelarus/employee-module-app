@@ -1,0 +1,9 @@
+group 'com.azakharov.employeeapp.rest.spark'
+version '1.0.0'
+
+dependencies {
+    implementation project(':api')
+    implementation project(':rest:dto')
+
+    implementation group: 'com.sparkjava', name: 'spark-core', version: '2.9.3'
+}
