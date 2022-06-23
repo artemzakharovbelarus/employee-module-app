@@ -55,4 +55,14 @@ public class EmployeeEntity {
     public EmployeePositionEntity getPositionEntity() {
         return positionEntity;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeEntity{" +
+               "id=" + id +
+               ", firstName='" + firstName + '\'' +
+               ", surname='" + surname + '\'' +
+               ", positionEntity=" + positionEntity +
+               '}';
+    }
 }

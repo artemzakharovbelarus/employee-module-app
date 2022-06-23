@@ -45,26 +45,40 @@ public class EmployeeJdbcRepository extends BaseJdbcRepository<EmployeeEntity, L
 
     @Override
     public Optional<EmployeeEntity> find(Long id) {
-        return find(FIND_EMPLOYEE_BY_ID_SQL, id);
+        LOGGER.debug("Finding EmployeeEntity in database started for id: {}", id);
+        final var employee = find(FIND_EMPLOYEE_BY_ID_SQL, id);
+        LOGGER.trace("EmployeeEntity detailed printing: {}", employee);
+
+        return employee;
     }
 
     @Override
     public List<EmployeeEntity> findAll() {
-        return findAll(FIND_ALL_EMPLOYEES_SQL);
+        LOGGER.debug("Finding all EmployeeEntity in database started");
+        final var employees = findAll(FIND_ALL_EMPLOYEES_SQL);
+        LOGGER.trace("EmployeeEntity detailed printing: {}", employees);
+
+        return employees;
     }
 
     @Override
     public EmployeeEntity save(EmployeeEntity employee) {
-        return save(SAVE_EMPLOYEE_SQL, employee);
+        LOGGER.debug("EmployeeEntity saving started, position: {}", employee);
+        final var saved = save(SAVE_EMPLOYEE_SQL, employee);
+        LOGGER.debug("EmployeeEntity saving successfully ended, generated id: {}", saved.getId());
+
+        return saved;
     }
 
     @Override
     public EmployeeEntity update(EmployeeEntity employee) {
+        LOGGER.debug("EmployeeEntity updating started, position: {}", employee);
         return super.update(UPDATE_EMPLOYEE_SQL, employee);
     }
 
     @Override
     public void delete(Long id) {
+        LOGGER.debug("EmployeeEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_SQL, id);
     }
 

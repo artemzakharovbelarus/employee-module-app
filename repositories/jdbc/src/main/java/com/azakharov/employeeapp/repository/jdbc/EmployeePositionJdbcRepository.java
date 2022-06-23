@@ -36,36 +36,50 @@ public class EmployeePositionJdbcRepository extends BaseJdbcRepository<EmployeeP
 
     @Override
     public Optional<EmployeePositionEntity> find(Long id) {
-        return super.find(FIND_EMPLOYEE_POSITION_BY_ID_SQL, id);
+        LOGGER.debug("Finding EmployeePositionEntity in database started for id: {}", id);
+        final var position = super.find(FIND_EMPLOYEE_POSITION_BY_ID_SQL, id);
+        LOGGER.trace("EmployeePositionEntity detailed printing: {}", position);
+
+        return position;
     }
 
     @Override
     public List<EmployeePositionEntity> findAll() {
-        return super.findAll(FIND_ALL_EMPLOYEE_POSITIONS_SQL);
+        LOGGER.debug("Finding all EmployeePositionEntity in database started");
+        final var positions = super.findAll(FIND_ALL_EMPLOYEE_POSITIONS_SQL);
+        LOGGER.trace("EmployeePositionEntities detailed printing: {}", positions);
+
+        return positions;
     }
 
     @Override
-    public EmployeePositionEntity save(EmployeePositionEntity entity) {
-        return super.save(SAVE_EMPLOYEE_POSITION_SQL, entity);
+    public EmployeePositionEntity save(EmployeePositionEntity position) {
+        LOGGER.debug("EmployeePositionEntity saving started, position: {}", position);
+        final var saved = super.save(SAVE_EMPLOYEE_POSITION_SQL, position);
+        LOGGER.debug("EmployeePositionEntity saving successfully ended, generated id: {}", saved.getId());
+
+        return saved;
     }
 
     @Override
-    public EmployeePositionEntity update(EmployeePositionEntity entity) {
-        return super.update(UPDATE_EMPLOYEE_POSITION_SQL, entity);
+    public EmployeePositionEntity update(EmployeePositionEntity position) {
+        LOGGER.debug("EmployeePositionEntity updating started, position: {}", position);
+        return super.update(UPDATE_EMPLOYEE_POSITION_SQL, position);
     }
 
     @Override
     public void delete(Long id) {
+        LOGGER.debug("EmployeePositionEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_POSITION_SQL, id);
     }
 
     @Override
-    protected List<Object> convertEntityToParams(EmployeePositionEntity entity) {
+    protected List<Object> convertEntityToParams(EmployeePositionEntity position) {
         final var params = new ArrayList<>();
 
-        params.add(entity.getName());
-        if (entity.getId() != null) {
-            params.add(entity.getId());
+        params.add(position.getName());
+        if (position.getId() != null) {
+            params.add(position.getId());
         }
 
         return params;
