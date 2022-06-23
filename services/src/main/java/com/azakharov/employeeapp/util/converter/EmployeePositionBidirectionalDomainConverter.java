@@ -17,9 +17,9 @@ public class EmployeePositionBidirectionalDomainConverter implements Bidirection
 
     @Override
     public EmployeePositionEntity convertToEntity(EmployeePosition domain) {
-        final var id = domain.getId()
+        final var id = domain.id()
                              .map(EmployeePositionId::value)
                              .orElse(null);
-        return new EmployeePositionEntity(id, domain.getName());
+        return new EmployeePositionEntity(id, domain.name());
     }
 }

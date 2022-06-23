@@ -2,40 +2,28 @@ package com.azakharov.employeeapp.rest.view;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EmployeeView {
-
-    private final Long id;
-    private final String firstName;
-    private final String surname;
-    private final EmployeePositionView positionView;
-
-    public EmployeeView(final Long id,
-                        final String firstName,
-                        final String surname,
-                        final EmployeePositionView positionView) {
-        this.id = id;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.positionView = positionView;
-    }
+public record EmployeeView(Long id,
+                           String firstName,
+                           String surname,
+                           EmployeePositionView positionView) {
 
     @JsonProperty("id")
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
     @JsonProperty("first_name")
-    public String getFirstName() {
+    public String firstName() {
         return firstName;
     }
 
     @JsonProperty("surname")
-    public String getSurname() {
+    public String surname() {
         return surname;
     }
 
     @JsonProperty("position")
-    public EmployeePositionView getPositionView() {
+    public EmployeePositionView positionView() {
         return positionView;
     }
 

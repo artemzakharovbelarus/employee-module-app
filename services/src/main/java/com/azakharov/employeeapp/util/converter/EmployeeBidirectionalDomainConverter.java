@@ -28,12 +28,12 @@ public class EmployeeBidirectionalDomainConverter implements BidirectionalDomain
 
     @Override
     public EmployeeEntity convertToEntity(Employee domain) {
-        final var id = domain.getId()
+        final var id = domain.id()
                              .map(EmployeeId::value)
                              .orElse(null);
         return new EmployeeEntity(id,
-                                  domain.getFirstName(),
-                                  domain.getSurname(),
-                                  employeePositionConverter.convertToEntity(domain.getPosition()));
+                                  domain.firstName(),
+                                  domain.surname(),
+                                  employeePositionConverter.convertToEntity(domain.position()));
     }
 }

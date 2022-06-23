@@ -12,15 +12,15 @@ public class EmployeePositionAllSideDomainConverter
 
     @Override
     public EmployeePosition convertToDomain(EmployeePositionDto dto) {
-        final var id = Optional.ofNullable(dto.getId()).map(EmployeePositionId::new);
-        return new EmployeePosition(id, dto.getName());
+        final var id = Optional.ofNullable(dto.id()).map(EmployeePositionId::new);
+        return new EmployeePosition(id, dto.name());
     }
 
     @Override
     public EmployeePositionView convertToView(EmployeePosition domain) {
-        final var id = domain.getId()
+        final var id = domain.id()
                              .map(EmployeePositionId::value)
                              .orElse(null);
-        return new EmployeePositionView(id, domain.getName());
+        return new EmployeePositionView(id, domain.name());
     }
 }

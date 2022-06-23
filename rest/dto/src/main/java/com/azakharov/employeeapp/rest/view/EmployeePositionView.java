@@ -2,24 +2,15 @@ package com.azakharov.employeeapp.rest.view;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EmployeePositionView {
-
-    private final Long id;
-    private final String name;
-
-    public EmployeePositionView(final Long id,
-                                final String name) {
-        this.id = id;
-        this.name = name;
-    }
+public record EmployeePositionView(Long id, String name) {
 
     @JsonProperty("id")
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
     @JsonProperty("name")
-    public String getName() {
+    public String name() {
         return name;
     }
 

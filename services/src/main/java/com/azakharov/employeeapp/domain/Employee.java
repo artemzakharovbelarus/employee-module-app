@@ -4,15 +4,12 @@ import com.azakharov.employeeapp.domain.exception.InvalidDomainException;
 import com.azakharov.employeeapp.domain.id.EmployeeId;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Objects;
 import java.util.Optional;
 
-public class Employee {
-
-    private final Optional<EmployeeId> id;
-    private final String firstName;
-    private final String surname;
-    private final EmployeePosition position;
+public record Employee(Optional<EmployeeId> id,
+                       String firstName,
+                       String surname,
+                       EmployeePosition position) {
 
     public Employee(final Optional<EmployeeId> id,
                     final String firstName,
@@ -26,22 +23,6 @@ public class Employee {
         validate();
     }
 
-    public Optional<EmployeeId> getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public EmployeePosition getPosition() {
-        return position;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -52,24 +33,19 @@ public class Employee {
         }
         final var employee = (Employee) o;
         return id.equals(employee.id)
-            && firstName.equals(employee.firstName)
-            && surname.equals(employee.surname)
-            && position.equals(employee.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, surname, position);
+                && firstName.equals(employee.firstName)
+                && surname.equals(employee.surname)
+                && position.equals(employee.position);
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-               "value=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", surname='" + surname + '\'' +
-               ", position=" + position +
-               '}';
+                "value=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", position=" + position +
+                '}';
     }
 
     private void validate() {

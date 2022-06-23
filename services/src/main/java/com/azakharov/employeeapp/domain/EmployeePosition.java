@@ -4,13 +4,9 @@ import com.azakharov.employeeapp.domain.exception.InvalidDomainException;
 import com.azakharov.employeeapp.domain.id.EmployeePositionId;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Objects;
 import java.util.Optional;
 
-public class EmployeePosition {
-
-    private final Optional<EmployeePositionId> id;
-    private final String name;
+public record EmployeePosition(Optional<EmployeePositionId> id, String name) {
 
     public EmployeePosition(final Optional<EmployeePositionId> id,
                             final String name) {
@@ -18,14 +14,6 @@ public class EmployeePosition {
         this.name = name;
 
         validate();
-    }
-
-    public Optional<EmployeePositionId> getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -38,20 +26,15 @@ public class EmployeePosition {
         }
         final var that = (EmployeePosition) o;
         return id.equals(that.id)
-            && name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
+                && name.equals(that.name);
     }
 
     @Override
     public String toString() {
         return "EmployeePosition{" +
-               "value=" + id +
-               ", name='" + name + '\'' +
-               '}';
+                "value=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     private void validate() {

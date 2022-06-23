@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee save(Employee employee) {
-        checkPositionOnExisting(employee.getPosition());
+        checkPositionOnExisting(employee.position());
 
         final var savingEntity = employeeConverter.convertToEntity(employee);
         return employeeConverter.convertToDomain(employeeRepository.save(savingEntity));
@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee update(Employee employee) {
-        checkPositionOnExisting(employee.getPosition());
+        checkPositionOnExisting(employee.position());
 
         final var savingEntity = employeeConverter.convertToEntity(employee);
         return employeeConverter.convertToDomain(employeeRepository.update(savingEntity));
@@ -66,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void checkPositionOnExisting(final EmployeePosition position) {
-        final var positionId = position.getId().orElse(null);
+        final var positionId = position.id().orElse(null);
         final var checkedPosition = employeePositionService.find(positionId);
 
         if (checkedPosition.isEmpty()) {

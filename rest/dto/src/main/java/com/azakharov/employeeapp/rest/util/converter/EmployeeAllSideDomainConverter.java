@@ -19,21 +19,21 @@ public class EmployeeAllSideDomainConverter implements AllSideDomainConverter<Em
 
     @Override
     public Employee convertToDomain(EmployeeDto dto) {
-        final var id = Optional.ofNullable(dto.getId()).map(EmployeeId::new);
+        final var id = Optional.ofNullable(dto.id()).map(EmployeeId::new);
         return new Employee(id,
-                            dto.getFirstName(),
-                            dto.getSurname(),
-                            employeePositionAllSideConverter.convertToDomain(dto.getPositionDto()));
+                            dto.firstName(),
+                            dto.surname(),
+                            employeePositionAllSideConverter.convertToDomain(dto.positionDto()));
     }
 
     @Override
     public EmployeeView convertToView(Employee domain) {
-        final var id = domain.getId()
+        final var id = domain.id()
                              .map(EmployeeId::value)
                              .orElse(null);
         return new EmployeeView(id,
-                                domain.getFirstName(),
-                                domain.getSurname(),
-                                employeePositionAllSideConverter.convertToView(domain.getPosition()));
+                                domain.firstName(),
+                                domain.surname(),
+                                employeePositionAllSideConverter.convertToView(domain.position()));
     }
 }
