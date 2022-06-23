@@ -1,12 +1,15 @@
 package com.azakharov.employeeapp.repository.hibernate;
 
-import com.azakharov.employeeapp.repository.jpa.RepositoryException;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseHibernateRepository<E, ID> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseHibernateRepository.class);
 
     protected final Session session;
 
@@ -59,7 +62,8 @@ public abstract class BaseHibernateRepository<E, ID> {
 
     private Runnable processDeletingFailing(ID id) {
         return () -> {
-            throw new RepositoryException("Entity with id {0} wasn''t found for deleting in database", id);
+            LOGGER.debug("Entity with id {} wasn''t found for deleting in database", id);
+            throw new HibernateRepositoryException("Entity with id {0} wasn''t found for deleting in database", id);
         };
     }
 }

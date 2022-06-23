@@ -4,6 +4,7 @@ version '1.0.0'
 dependencies {
     implementation project(':repositories:jpa')
     implementation project(':repositories:hibernate')
+    implementation project(':repositories:jdbc')
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }

@@ -18,7 +18,8 @@ public class EmployeeBidirectionalDomainConverter implements BidirectionalDomain
 
     @Override
     public Employee convertToDomain(EmployeeEntity entity) {
-        final var id = Optional.of(new EmployeeId(entity.getId()));
+        final var id = Optional.ofNullable(entity.getId())
+                               .map(EmployeeId::new);
         return new Employee(id,
                             entity.getFirstName(),
                             entity.getSurname(),

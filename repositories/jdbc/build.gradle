@@ -1,0 +1,8 @@
+group 'com.azakharov.employeeapp.repository.jdbc'
+version '1.0.0'
+
+dependencies {
+    implementation project(':repositories:jpa')
+
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
+}
