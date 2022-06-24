@@ -3,7 +3,7 @@ version '1.0.0'
 
 dependencies {
     implementation project(':api')
-    implementation project(':rest:dto')
+    implementation project(':rest:controller')
 
     implementation group: 'com.sparkjava', name: 'spark-core', version: '2.9.3'
 }

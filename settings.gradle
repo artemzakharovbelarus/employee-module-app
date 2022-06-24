@@ -1,10 +1,11 @@
 rootProject.name = 'employee-module-app'
 include 'services', 'api', 'rest', 'repositories', 'repositories:jpa', 'repositories:hibernate', 'repositories:jdbc',
-        'rest:spark', 'rest:dto'
+        'rest:spark', 'rest:controller', 'rest:jakarta'
 
 findProject(':repositories:jpa')?.name = 'jpa'
 findProject(':rest:spark')?.name = 'spark'
-findProject(':rest:dto')?.name = 'dto'
+findProject(':rest:controller')?.name = 'controller'
 findProject(':repositories:hibernate')?.name = 'hibernate'
 findProject(':repositories:jdbc')?.name = 'jdbc'
+findProject(':rest:jakarta')?.name = 'jakarta'
 

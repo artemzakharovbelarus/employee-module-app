@@ -1,4 +1,4 @@
-package com.azakharov.employeeapp.rest.spark.controller;
+package com.azakharov.employeeapp.rest.controller;
 
 import com.azakharov.employeeapp.api.EmployeePositionController;
 import com.azakharov.employeeapp.domain.id.EmployeePositionId;
