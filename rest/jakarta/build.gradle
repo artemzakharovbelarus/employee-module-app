@@ -1,9 +1,0 @@
-group 'com.azakharov.employeeapp.rest.jakarta'
-version '1.0.0'
-
-dependencies {
-    implementation project(':api')
-    implementation project(':rest:controller')
-
-    implementation group: 'jakarta.platform', name: 'jakarta.jakartaee-web-api', version: '9.1.0'
-}
