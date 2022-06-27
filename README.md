@@ -13,6 +13,7 @@
 ##### - JPA
 ##### - Hibernate
 ##### - JDBC
+##### - Spring JDBC
 ##### - Gradle
 ##### - Docker/Docker compose
 ##### - Postgres
