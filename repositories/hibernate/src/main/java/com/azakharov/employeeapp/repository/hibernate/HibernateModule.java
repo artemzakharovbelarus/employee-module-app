@@ -10,11 +10,6 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bindHibernateRepositories();
-    }
-
     @Provides
     @Singleton
     public Configuration provideHibernateConfiguration() {
@@ -24,6 +19,11 @@ public class HibernateModule extends AbstractModule {
     @Provides
     public Session provideEntityManager(final Configuration configuration) {
         return configuration.buildSessionFactory().openSession();
+    }
+
+    @Override
+    protected void configure() {
+        bindHibernateRepositories();
     }
 
     private void bindHibernateRepositories() {

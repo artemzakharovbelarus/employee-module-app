@@ -162,16 +162,20 @@ public abstract class BaseJdbcRepository<E, ID> {
 
     private Consumer<PreparedStatement> performActionForUpdating(final ID id) {
         return preparedStatement -> {
+
             try {
                 final var rowsEffected = preparedStatement.executeUpdate();
+
                 if (rowsEffected == 0) {
                     throw new JdbcRepositoryException("There is no record with ID {0}", id);
                 }
+
             } catch (final SQLException e) {
                 LOGGER.error("Exception during executing JDBC preparedStatement for update, message: {}", e.getMessage());
                 LOGGER.debug("Exception during executing JDBC preparedStatement for update", e);
                 throw new JdbcRepositoryException("Exception during executing JDBC preparedStatement for update, message: {0}", e.getMessage());
             }
+
         };
     }
 

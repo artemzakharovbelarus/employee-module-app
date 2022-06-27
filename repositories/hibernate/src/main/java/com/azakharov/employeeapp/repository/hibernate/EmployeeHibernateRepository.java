@@ -16,7 +16,7 @@ public class EmployeeHibernateRepository extends BaseHibernateRepository<Employe
     }
 
     @Override
-    public Optional<EmployeeEntity> find(Long id) {
+    public Optional<EmployeeEntity> find(final Long id) {
         return super.find(id);
     }
 
@@ -26,17 +26,17 @@ public class EmployeeHibernateRepository extends BaseHibernateRepository<Employe
     }
 
     @Override
-    public EmployeeEntity save(EmployeeEntity employee) {
+    public EmployeeEntity save(final EmployeeEntity employee) {
         return super.save(employee);
     }
 
     @Override
-    public EmployeeEntity update(EmployeeEntity employee) {
+    public EmployeeEntity update(final EmployeeEntity employee) {
         return super.update(employee);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(final Long id) {
         super.delete(id);
     }
 }

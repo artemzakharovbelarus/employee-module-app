@@ -5,6 +5,7 @@ dependencies {
     implementation project(':repositories:jpa')
     implementation project(':repositories:hibernate')
     implementation project(':repositories:jdbc')
+    implementation project(':repositories:spring:jdbc');
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }

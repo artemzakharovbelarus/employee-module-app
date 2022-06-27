@@ -12,11 +12,6 @@ import javax.sql.DataSource;
 
 public class JdbcModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bindJdbcRepositories();
-    }
-
     @Provides
     @Singleton
     public HikariConfig provideHikariConfig() {
@@ -27,6 +22,11 @@ public class JdbcModule extends AbstractModule {
     @Singleton
     public DataSource dataSource(final HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
+    }
+
+    @Override
+    protected void configure() {
+        bindJdbcRepositories();
     }
 
     private void bindJdbcRepositories() {

@@ -30,23 +30,23 @@ public abstract class BaseHibernateRepository<E, ID> {
         return session.createQuery(selectAllQuery).getResultList();
     }
 
-    protected Optional<E> find(ID id) {
+    protected Optional<E> find(final ID id) {
         return Optional.ofNullable(session.find(entityClass, id));
     }
 
-    protected E save(E entity) {
+    protected E save(final E entity) {
         return upsert(entity);
     }
 
-    protected E update(E entity) {
+    protected E update(final E entity) {
         return upsert(entity);
     }
 
-    protected void delete(ID id) {
+    protected void delete(final ID id) {
         find(id).ifPresentOrElse(this::processDelete, processDeletingFailing(id));
     }
 
-    private E upsert(E entity) {
+    private E upsert(final E entity) {
         session.getTransaction().begin();
         final var saved = session.merge(entity);
         session.getTransaction().commit();
@@ -60,7 +60,7 @@ public abstract class BaseHibernateRepository<E, ID> {
         session.getTransaction().commit();
     }
 
-    private Runnable processDeletingFailing(ID id) {
+    private Runnable processDeletingFailing(final ID id) {
         return () -> {
             LOGGER.debug("Entity with id {} wasn''t found for deleting in database", id);
             throw new HibernateRepositoryException("Entity with id {0} wasn''t found for deleting in database", id);
