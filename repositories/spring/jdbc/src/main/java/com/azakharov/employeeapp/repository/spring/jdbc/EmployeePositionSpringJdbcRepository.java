@@ -36,26 +36,40 @@ public class EmployeePositionSpringJdbcRepository extends BaseSpringJdbcReposito
 
     @Override
     public Optional<EmployeePositionEntity> find(final Long id) {
-        return super.find(FIND_EMPLOYEE_POSITION_BY_ID_SQL, id);
+        LOGGER.debug("Finding EmployeePositionEntity in database started for id: {}", id);
+        final var position = super.find(FIND_EMPLOYEE_POSITION_BY_ID_SQL, id);
+        LOGGER.trace("EmployeePositionEntity detailed printing: {}", position);
+
+        return position;
     }
 
     @Override
     public List<EmployeePositionEntity> findAll() {
-        return super.findAll(FIND_ALL_EMPLOYEE_POSITIONS_SQL);
+        LOGGER.debug("Finding all EmployeePositionEntity in database started");
+        final var positions = super.findAll(FIND_ALL_EMPLOYEE_POSITIONS_SQL);
+        LOGGER.trace("EmployeePositionEntities detailed printing: {}", positions);
+
+        return positions;
     }
 
     @Override
     public EmployeePositionEntity save(final EmployeePositionEntity position) {
-        return super.save(SAVE_EMPLOYEE_POSITION_SQL, position);
+        LOGGER.debug("EmployeePositionEntity saving started, position: {}", position);
+        final var saved = super.save(SAVE_EMPLOYEE_POSITION_SQL, position);
+        LOGGER.debug("EmployeePositionEntity saving successfully ended, generated id: {}", saved.getId());
+
+        return saved;
     }
 
     @Override
     public EmployeePositionEntity update(final EmployeePositionEntity position) {
+        LOGGER.debug("EmployeePositionEntity updating started, position: {}", position);
         return super.update(UPDATE_EMPLOYEE_POSITION_SQL, position);
     }
 
     @Override
     public void delete(final Long id) {
+        LOGGER.debug("EmployeePositionEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_POSITION_SQL, id);
     }
 
