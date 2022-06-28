@@ -16,6 +16,14 @@ public class EclipseLinkModule extends AbstractModule {
 
     private static final String PERSISTENCE_UNIT_NAME = "postgres-pu";
 
+    private static final String JDBC_URL_KEY = "javax.persistence.jdbc.url";
+    private static final String JDBC_USERNAME_KEY = "javax.persistence.jdbc.user";
+    private static final String JDBC_PASSWORD_KEY = "javax.persistence.jdbc.password";
+
+    private static final String ENV_DATASOURCE_URL_KEY = "SPRING_DATASOURCE_URL";
+    private static final String ENV_DATASOURCE_USERNAME_KEY = "POSTGRES_USER";
+    private static final String ENV_DATASOURCE_PASSWORD_KEY = "POSTGRES_PASSWORD";
+
     @Provides
     public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, dataSource());
@@ -40,9 +48,9 @@ public class EclipseLinkModule extends AbstractModule {
     private Map<String, String> dataSource() {
         final var dataSource = new HashMap<String, String>();
 
-        dataSource.put("javax.persistence.jdbc.url", System.getenv("SPRING_DATASOURCE_URL"));
-        dataSource.put("javax.persistence.jdbc.user", System.getenv("POSTGRES_USER"));
-        dataSource.put("javax.persistence.jdbc.password", System.getenv("POSTGRES_PASSWORD"));
+        dataSource.put(JDBC_URL_KEY, System.getenv(ENV_DATASOURCE_URL_KEY));
+        dataSource.put(JDBC_USERNAME_KEY, System.getenv(ENV_DATASOURCE_USERNAME_KEY));
+        dataSource.put(JDBC_PASSWORD_KEY, System.getenv(ENV_DATASOURCE_PASSWORD_KEY));
 
         return dataSource;
     }
