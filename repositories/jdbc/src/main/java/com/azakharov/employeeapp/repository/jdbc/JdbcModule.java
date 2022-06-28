@@ -12,10 +12,20 @@ import javax.sql.DataSource;
 
 public class JdbcModule extends AbstractModule {
 
+    private static final String ENV_DATASOURCE_URL_KEY = "SPRING_DATASOURCE_URL";
+    private static final String ENV_DATASOURCE_USERNAME_KEY = "POSTGRES_USER";
+    private static final String ENV_DATASOURCE_PASSWORD_KEY = "POSTGRES_PASSWORD";
+
     @Provides
     @Singleton
     public HikariConfig provideHikariConfig() {
-        return new HikariConfig("repositories/jdbc/src/main/resources/jdbc.properties");
+        final var hikariConfig = new HikariConfig();
+
+        hikariConfig.setJdbcUrl(System.getenv(ENV_DATASOURCE_URL_KEY));
+        hikariConfig.setUsername(System.getenv(ENV_DATASOURCE_USERNAME_KEY));
+        hikariConfig.setPassword(System.getenv(ENV_DATASOURCE_PASSWORD_KEY));
+
+        return hikariConfig;
     }
 
     @Provides
