@@ -7,6 +7,7 @@ import com.azakharov.employeeapp.rest.dto.EmployeeDto;
 import com.azakharov.employeeapp.rest.dto.EmployeePositionDto;
 import com.azakharov.employeeapp.rest.controller.EmployeePositionRestController;
 import com.azakharov.employeeapp.rest.controller.EmployeeRestController;
+import com.azakharov.employeeapp.rest.spark.exception.SparkExceptionHandler;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeePositionSparkProxyRestController;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeeSparkProxyRestController;
 import com.azakharov.employeeapp.rest.util.JsonUtil;
@@ -32,6 +33,8 @@ public class RestSparkModule extends AbstractModule {
         bindConverters();
         bindControllers();
         bindSparkProxyControllers();
+
+        super.bind(SparkExceptionHandler.class);
     }
 
     private void bindJsonUtil() {
