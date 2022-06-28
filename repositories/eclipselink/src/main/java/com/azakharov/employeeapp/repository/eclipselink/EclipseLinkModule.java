@@ -9,6 +9,8 @@ import com.google.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EclipseLinkModule extends AbstractModule {
 
@@ -16,7 +18,7 @@ public class EclipseLinkModule extends AbstractModule {
 
     @Provides
     public EntityManagerFactory entityManagerFactory() {
-        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, dataSource());
     }
 
     @Provides
@@ -33,5 +35,15 @@ public class EclipseLinkModule extends AbstractModule {
     private void bindEclipseLinkRepositories() {
         super.bind(EmployeePositionRepository.class).to(EmployeePositionEclipseLinkRepository.class);
         super.bind(EmployeeRepository.class).to(EmployeeEclipseLinkRepository.class);
+    }
+
+    private Map<String, String> dataSource() {
+        final var dataSource = new HashMap<String, String>();
+
+        dataSource.put("javax.persistence.jdbc.url", System.getenv("SPRING_DATASOURCE_URL"));
+        dataSource.put("javax.persistence.jdbc.user", System.getenv("POSTGRES_USER"));
+        dataSource.put("javax.persistence.jdbc.password", System.getenv("POSTGRES_PASSWORD"));
+
+        return dataSource;
     }
 }

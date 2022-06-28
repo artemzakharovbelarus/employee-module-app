@@ -10,9 +10,6 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5457/employees-db" />
-            <property name="javax.persistence.jdbc.user" value="temax359x@gmail.com" />
-            <property name="javax.persistence.jdbc.password" value="GxywQaXT4402lCuutq8M" />
         </properties>
 
     </persistence-unit>
