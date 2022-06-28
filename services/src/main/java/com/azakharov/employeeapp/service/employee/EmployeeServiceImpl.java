@@ -31,8 +31,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> find(EmployeeId employeeId) {
-        return employeeRepository.find(employeeId.value())
+    public Optional<Employee> find(final EmployeeId id) {
+        return employeeRepository.find(id.value())
                                  .map(employeeConverter::convertToDomain);
     }
 
@@ -45,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee save(Employee employee) {
+    public Employee save(final Employee employee) {
         checkPositionOnExisting(employee.position());
 
         final var savingEntity = employeeConverter.convertToEntity(employee);
@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee update(Employee employee) {
+    public Employee update(final Employee employee) {
         checkPositionOnExisting(employee.position());
 
         final var savingEntity = employeeConverter.convertToEntity(employee);
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void delete(EmployeeId id) {
+    public void delete(final EmployeeId id) {
         employeeRepository.delete(id.value());
     }
 
