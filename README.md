@@ -15,6 +15,7 @@
 ##### - JDBC
 ##### - Spring JDBC
 ##### - Spring Data
+##### - Eclipse link
 ##### - Gradle
 ##### - Docker/Docker compose
 ##### - Postgres
