@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.azakharov.employeeapp.repository.spring.data")
 @EnableTransactionManagement
 public class SpringDataConfig {
 
@@ -32,7 +32,7 @@ public class SpringDataConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(final DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {
         final var jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setGenerateDdl(true);
 

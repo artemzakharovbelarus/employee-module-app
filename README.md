@@ -14,6 +14,7 @@
 ##### - Hibernate
 ##### - JDBC
 ##### - Spring JDBC
+##### - Spring Data
 ##### - Gradle
 ##### - Docker/Docker compose
 ##### - Postgres

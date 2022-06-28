@@ -1,6 +1,5 @@
 package com.azakharov.employeeapp;
 
-import com.azakharov.employeeapp.repository.hibernate.HibernateModule;
 import com.azakharov.employeeapp.repository.spring.data.SpringDataModule;
 import com.azakharov.employeeapp.util.converter.EmployeeBidirectionalDomainConverter;
 import com.azakharov.employeeapp.util.converter.EmployeePositionBidirectionalDomainConverter;
@@ -10,10 +9,10 @@ public class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-//        super.install(new SpringDataModule());
+        super.install(new SpringDataModule());
 //        super.install(new SpringJdbcModule());
 //        super.install(new JdbcModule());
-        super.install(new HibernateModule());
+//        super.install(new HibernateModule());
 
         bindDomainConverters();
     }
