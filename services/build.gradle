@@ -7,6 +7,7 @@ dependencies {
     implementation project(':repositories:jdbc')
     implementation project(':repositories:spring:jdbc')
     implementation project(':repositories:spring:data')
+    implementation project(':repositories:eclipselink')
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }

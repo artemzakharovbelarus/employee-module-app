@@ -1,0 +1,8 @@
+group 'com.azakharov.employeeapp.repository.eclipselink'
+version '1.0.0'
+
+dependencies {
+    implementation project(':repositories:jpa')
+
+    implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.6.4'
+}

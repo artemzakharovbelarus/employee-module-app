@@ -21,6 +21,10 @@ public abstract class BaseHibernateRepository<E, ID> {
         this.entityClass = entityClass;
     }
 
+    protected Optional<E> find(final ID id) {
+        return Optional.ofNullable(session.find(entityClass, id));
+    }
+
     protected List<E> findAll() {
         final var criteriaBuilder = session.getCriteriaBuilder();
         final var query = criteriaBuilder.createQuery(entityClass);
@@ -28,10 +32,6 @@ public abstract class BaseHibernateRepository<E, ID> {
         final var selectAllQuery = query.select(rootEntry);
 
         return session.createQuery(selectAllQuery).getResultList();
-    }
-
-    protected Optional<E> find(final ID id) {
-        return Optional.ofNullable(session.find(entityClass, id));
     }
 
     protected E save(final E entity) {
