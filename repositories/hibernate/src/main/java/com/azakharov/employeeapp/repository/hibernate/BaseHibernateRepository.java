@@ -51,7 +51,7 @@ public abstract class BaseHibernateRepository<E, ID> {
         final var saved = session.merge(entity);
         session.getTransaction().commit();
 
-        return saved;
+        return (E) saved;
     }
 
     private void processDelete(final E entity) {
