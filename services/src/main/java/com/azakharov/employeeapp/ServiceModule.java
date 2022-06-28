@@ -1,7 +1,6 @@
 package com.azakharov.employeeapp;
 
 import com.azakharov.employeeapp.repository.eclipselink.EclipseLinkModule;
-import com.azakharov.employeeapp.repository.spring.data.SpringDataModule;
 import com.azakharov.employeeapp.util.converter.EmployeeBidirectionalDomainConverter;
 import com.azakharov.employeeapp.util.converter.EmployeePositionBidirectionalDomainConverter;
 import com.google.inject.AbstractModule;
