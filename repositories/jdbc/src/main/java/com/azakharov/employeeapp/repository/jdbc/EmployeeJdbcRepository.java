@@ -47,7 +47,7 @@ public class EmployeeJdbcRepository extends BaseJdbcRepository<EmployeeEntity, L
     @Override
     public Optional<EmployeeEntity> find(final Long id) {
         LOGGER.debug("Finding EmployeeEntity in database started for id: {}", id);
-        final var employee = find(FIND_EMPLOYEE_BY_ID_SQL, id);
+        final var employee = super.find(FIND_EMPLOYEE_BY_ID_SQL, id);
         LOGGER.trace("EmployeeEntity detailed printing: {}", employee);
 
         return employee;
@@ -56,7 +56,7 @@ public class EmployeeJdbcRepository extends BaseJdbcRepository<EmployeeEntity, L
     @Override
     public List<EmployeeEntity> findAll() {
         LOGGER.debug("Finding all EmployeeEntity in database started");
-        final var employees = findAll(FIND_ALL_EMPLOYEES_SQL);
+        final var employees = super.findAll(FIND_ALL_EMPLOYEES_SQL);
         LOGGER.trace("EmployeeEntity detailed printing: {}", employees);
 
         return employees;
@@ -65,7 +65,7 @@ public class EmployeeJdbcRepository extends BaseJdbcRepository<EmployeeEntity, L
     @Override
     public EmployeeEntity save(final EmployeeEntity employee) {
         LOGGER.debug("EmployeeEntity saving started, position: {}", employee);
-        final var saved = save(SAVE_EMPLOYEE_SQL, employee);
+        final var saved = super.save(SAVE_EMPLOYEE_SQL, employee);
         LOGGER.debug("EmployeeEntity saving successfully ended, generated id: {}", saved.getId());
 
         return saved;
