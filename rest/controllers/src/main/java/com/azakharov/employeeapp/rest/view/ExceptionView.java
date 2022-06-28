@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ExceptionView(int httpCode, String message) {
 
-    @JsonProperty("id")
+    @JsonProperty("http_code")
     public int httpCode() {
         return httpCode;
     }
