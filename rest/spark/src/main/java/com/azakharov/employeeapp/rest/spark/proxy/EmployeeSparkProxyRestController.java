@@ -28,22 +28,22 @@ public class EmployeeSparkProxyRestController extends BaseSparkRestController<Em
     }
 
     public void getEmployee() {
-        Spark.get(GET_EMPLOYEE_ENDPOINT, performGetViewEndpoint(employeeController::get));
+        Spark.get(GET_EMPLOYEE_ENDPOINT, performGetViewEndpointLogic(employeeController::get));
     }
 
     public void getAllEmployees() {
-        Spark.get(GET_ALL_EMPLOYEES_ENDPOINT, performGetAllViewsEndpoint(employeeController::getAll));
+        Spark.get(GET_ALL_EMPLOYEES_ENDPOINT, performGetAllViewsEndpointLogic(employeeController::getAll));
     }
 
     public void save() {
-        Spark.post(SAVE_EMPLOYEE_ENDPOINT, performUpsertDomainEndpoint(employeeController::save, EmployeeDto.class));
+        Spark.post(SAVE_EMPLOYEE_ENDPOINT, performUpsertDomainEndpointLogic(employeeController::save, EmployeeDto.class));
     }
 
     public void update() {
-        Spark.put(UPDATE_EMPLOYEE_ENDPOINT, performUpsertDomainEndpoint(employeeController::update, EmployeeDto.class));
+        Spark.put(UPDATE_EMPLOYEE_ENDPOINT, performUpsertDomainEndpointLogic(employeeController::update, EmployeeDto.class));
     }
 
     public void delete() {
-        Spark.delete(DELETE_EMPLOYEE_ENDPOINT, performDeleteDomainEndpoint(employeeController::delete, "Employee"));
+        Spark.delete(DELETE_EMPLOYEE_ENDPOINT, performDeleteDomainEndpointLogic(employeeController::delete, "Employee"));
     }
 }

@@ -1,7 +1,6 @@
 package com.azakharov.employeeapp.rest.spark;
 
 import com.azakharov.employeeapp.rest.spark.exception.SparkExceptionHandler;
-import com.azakharov.employeeapp.rest.spark.proxy.BaseSparkRestController;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeePositionSparkProxyRestController;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeeSparkProxyRestController;
 import com.google.inject.Guice;
@@ -17,6 +16,7 @@ public class Main {
     }
 
     private static void initEmployeePositionEndpoints(final EmployeePositionSparkProxyRestController employeePositionController) {
+        employeePositionController.performNotFoundEndpoints();
         employeePositionController.getEmployeePosition();
         employeePositionController.getAllEmployeePositions();
         employeePositionController.save();

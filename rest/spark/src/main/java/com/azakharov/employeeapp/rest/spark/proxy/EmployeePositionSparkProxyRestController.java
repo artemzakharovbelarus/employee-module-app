@@ -28,24 +28,24 @@ public class EmployeePositionSparkProxyRestController extends BaseSparkRestContr
     }
 
     public void getEmployeePosition() {
-        Spark.get(GET_EMPLOYEE_POSITION_ENDPOINT, performGetViewEndpoint(employeePositionController::get));
+        Spark.get(GET_EMPLOYEE_POSITION_ENDPOINT, performGetViewEndpointLogic(employeePositionController::get));
     }
 
     public void getAllEmployeePositions() {
-        Spark.get(GET_ALL_EMPLOYEE_POSITIONS_ENDPOINT, performGetAllViewsEndpoint(employeePositionController::getAll));
+        Spark.get(GET_ALL_EMPLOYEE_POSITIONS_ENDPOINT, performGetAllViewsEndpointLogic(employeePositionController::getAll));
     }
 
     public void save() {
         Spark.post(SAVE_EMPLOYEE_POSITION_ENDPOINT,
-                   performUpsertDomainEndpoint(employeePositionController::save,  EmployeePositionDto.class));
+                   performUpsertDomainEndpointLogic(employeePositionController::save,  EmployeePositionDto.class));
     }
 
     public void update() {
         Spark.put(UPDATE_EMPLOYEE_POSITION_ENDPOINT,
-                  performUpsertDomainEndpoint(employeePositionController::update,  EmployeePositionDto.class));
+                  performUpsertDomainEndpointLogic(employeePositionController::update,  EmployeePositionDto.class));
     }
 
     public void delete() {
-        Spark.delete(DELETE_EMPLOYEE_POSITION_ENDPOINT, performDeleteDomainEndpoint(employeePositionController::delete, "Position"));
+        Spark.delete(DELETE_EMPLOYEE_POSITION_ENDPOINT, performDeleteDomainEndpointLogic(employeePositionController::delete, "Position"));
     }
 }
