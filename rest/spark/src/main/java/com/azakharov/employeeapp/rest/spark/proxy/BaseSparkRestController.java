@@ -24,14 +24,7 @@ public abstract class BaseSparkRestController<DTO, V> {
 
     public BaseSparkRestController(final JsonUtil jsonUtil) {
         this.jsonUtil = jsonUtil;
-    }
-
-    public void performNotFoundEndpoints() {
-        Spark.get(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
-        Spark.post(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
-        Spark.delete(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
-        Spark.put(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
-        Spark.patch(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
+        performNotFoundEndpoints();
     }
 
     protected Route performGetViewEndpointLogic(final Function<Long, V> controller) {
@@ -83,6 +76,14 @@ public abstract class BaseSparkRestController<DTO, V> {
 
             return MessageFormat.format(DELETE_SUCCESS_MESSAGE_TEMPLATE, deletingDomainName, id);
         };
+    }
+
+    private void performNotFoundEndpoints() {
+        Spark.get(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
+        Spark.post(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
+        Spark.delete(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
+        Spark.put(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
+        Spark.patch(PAGE_NOT_FOUND_PATTERN, performPageNotFoundEndpointLogic());
     }
 
     private Route performPageNotFoundEndpointLogic() {

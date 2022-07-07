@@ -16,7 +16,6 @@ public class Main {
     }
 
     private static void initEmployeePositionEndpoints(final EmployeePositionSparkProxyRestController employeePositionController) {
-        employeePositionController.performNotFoundEndpoints();
         employeePositionController.getEmployeePosition();
         employeePositionController.getAllEmployeePositions();
         employeePositionController.save();
