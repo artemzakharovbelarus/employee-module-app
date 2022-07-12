@@ -34,6 +34,35 @@ public class EmployeePositionSpringJdbcRepository extends BaseSpringJdbcReposito
         super(jdbcTemplate);
     }
 
+
+    @Override
+    protected List<Object> convertEntityToParams(final EmployeePositionEntity position) {
+        final var params = new ArrayList<>();
+
+        params.add(position.getName());
+        if (position.getId() != null) {
+            params.add(position.getId());
+        }
+
+        return params;
+    }
+
+    @Override
+    protected EmployeePositionEntity constructEntity(final ResultSet resultSet, final int rowNum) {
+        try {
+            return new EmployeePositionEntity(resultSet.getLong(ID_COLUMN), resultSet.getString(NAME_COLUMN));
+        } catch (final SQLException e) {
+            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
+            LOGGER.debug("Exception during extracting data from JDBC result set", e);
+            throw new SpringJdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
+        }
+    }
+
+    @Override
+    protected EmployeePositionEntity constructSavedEntity(final Long id, final EmployeePositionEntity saved) {
+        return new EmployeePositionEntity(id, saved.getName());
+    }
+
     @Override
     public Optional<EmployeePositionEntity> find(final Long id) {
         LOGGER.debug("Finding EmployeePositionEntity in database started for id: {}", id);
@@ -71,33 +100,5 @@ public class EmployeePositionSpringJdbcRepository extends BaseSpringJdbcReposito
     public void delete(final Long id) {
         LOGGER.debug("EmployeePositionEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_POSITION_SQL, id);
-    }
-
-    @Override
-    protected List<Object> convertEntityToParams(final EmployeePositionEntity position) {
-        final var params = new ArrayList<>();
-
-        params.add(position.getName());
-        if (position.getId() != null) {
-            params.add(position.getId());
-        }
-
-        return params;
-    }
-
-    @Override
-    protected EmployeePositionEntity constructEntity(final ResultSet resultSet, final int rowNum) {
-        try {
-            return new EmployeePositionEntity(resultSet.getLong(ID_COLUMN), resultSet.getString(NAME_COLUMN));
-        } catch (final SQLException e) {
-            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
-            LOGGER.debug("Exception during extracting data from JDBC result set", e);
-            throw new SpringJdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
-        }
-    }
-
-    @Override
-    protected EmployeePositionEntity constructSavedEntity(final Long id, final EmployeePositionEntity saved) {
-        return new EmployeePositionEntity(id, saved.getName());
     }
 }

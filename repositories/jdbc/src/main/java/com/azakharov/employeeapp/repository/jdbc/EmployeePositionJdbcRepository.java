@@ -35,6 +35,41 @@ public class EmployeePositionJdbcRepository extends BaseJdbcRepository<EmployeeP
     }
 
     @Override
+    protected List<Object> convertEntityToParams(final EmployeePositionEntity position) {
+        final var params = new ArrayList<>();
+
+        params.add(position.getName());
+        if (position.getId() != null) {
+            params.add(position.getId());
+        }
+
+        return params;
+    }
+
+    @Override
+    protected EmployeePositionEntity constructEntity(final ResultSet resultSet) {
+        try {
+            return new EmployeePositionEntity(resultSet.getLong(ID_COLUMN), resultSet.getString(NAME_COLUMN));
+        } catch (final SQLException e) {
+            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
+            LOGGER.debug("Exception during extracting data from JDBC result set", e);
+            throw new JdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
+        }
+    }
+
+    @Override
+    protected EmployeePositionEntity constructSavedEntity(final ResultSet generatedKeys, final EmployeePositionEntity saved) {
+        try {
+            final var id = generatedKeys.getInt(ID_COLUMN);
+            return new EmployeePositionEntity((long) id, saved.getName());
+        } catch (final SQLException e) {
+            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
+            LOGGER.debug("Exception during extracting data from JDBC result set", e);
+            throw new JdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
+        }
+    }
+
+    @Override
     public Optional<EmployeePositionEntity> find(final Long id) {
         LOGGER.debug("Finding EmployeePositionEntity in database started for id: {}", id);
         final var position = super.find(FIND_EMPLOYEE_POSITION_BY_ID_SQL, id);
@@ -71,40 +106,5 @@ public class EmployeePositionJdbcRepository extends BaseJdbcRepository<EmployeeP
     public void delete(final Long id) {
         LOGGER.debug("EmployeePositionEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_POSITION_SQL, id);
-    }
-
-    @Override
-    protected List<Object> convertEntityToParams(final EmployeePositionEntity position) {
-        final var params = new ArrayList<>();
-
-        params.add(position.getName());
-        if (position.getId() != null) {
-            params.add(position.getId());
-        }
-
-        return params;
-    }
-
-    @Override
-    protected EmployeePositionEntity constructEntity(final ResultSet resultSet) {
-        try {
-            return new EmployeePositionEntity(resultSet.getLong(ID_COLUMN), resultSet.getString(NAME_COLUMN));
-        } catch (final SQLException e) {
-            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
-            LOGGER.debug("Exception during extracting data from JDBC result set", e);
-            throw new JdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
-        }
-    }
-
-    @Override
-    protected EmployeePositionEntity constructSavedEntity(final ResultSet generatedKeys, final EmployeePositionEntity saved) {
-        try {
-            final var id = generatedKeys.getInt(ID_COLUMN);
-            return new EmployeePositionEntity((long) id, saved.getName());
-        } catch (final SQLException e) {
-            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
-            LOGGER.debug("Exception during extracting data from JDBC result set", e);
-            throw new JdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
-        }
     }
 }

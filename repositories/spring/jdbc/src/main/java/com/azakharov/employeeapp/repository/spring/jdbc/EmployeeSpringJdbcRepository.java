@@ -46,6 +46,41 @@ public class EmployeeSpringJdbcRepository extends BaseSpringJdbcRepository<Emplo
     }
 
     @Override
+    protected List<Object> convertEntityToParams(final EmployeeEntity employee) {
+        final var params = new ArrayList<>();
+        params.add(employee.getFirstName());
+        params.add(employee.getSurname());
+        params.add(employee.getPositionEntity().getId());
+
+        if (employee.getId() != null) {
+            params.add(employee.getId());
+        }
+
+        return params;
+    }
+
+    @Override
+    protected EmployeeEntity constructEntity(final ResultSet resultSet, final int rowNum) {
+        try {
+            final var position = new EmployeePositionEntity(resultSet.getLong(POSITION_ID_COLUMN),
+                                                            resultSet.getString(EMPLOYEE_POSITION_NAME_COLUMN));
+            return new EmployeeEntity(resultSet.getLong(ID_COLUMN),
+                                      resultSet.getString(EMPLOYEE_FIRST_NAME_COLUMN),
+                                      resultSet.getString(EMPLOYEE_SURNAME_COLUMN),
+                                      position);
+        } catch (final SQLException e) {
+            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
+            LOGGER.debug("Exception during extracting data from JDBC result set", e);
+            throw new SpringJdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
+        }
+    }
+
+    @Override
+    protected EmployeeEntity constructSavedEntity(final Long id, final EmployeeEntity saved) {
+        return new EmployeeEntity(id, saved.getFirstName(), saved.getSurname(), saved.getPositionEntity());
+    }
+
+    @Override
     public Optional<EmployeeEntity> find(final Long id) {
         LOGGER.debug("Finding EmployeeEntity in database started for id: {}", id);
         final var employee = find(FIND_EMPLOYEE_BY_ID_SQL, id);
@@ -82,40 +117,5 @@ public class EmployeeSpringJdbcRepository extends BaseSpringJdbcRepository<Emplo
     public void delete(final Long id) {
         LOGGER.debug("EmployeeEntity deleting started, id: {}", id);
         super.delete(DELETE_EMPLOYEE_SQL, id);
-    }
-
-    @Override
-    protected List<Object> convertEntityToParams(final EmployeeEntity employee) {
-        final var params = new ArrayList<>();
-        params.add(employee.getFirstName());
-        params.add(employee.getSurname());
-        params.add(employee.getPositionEntity().getId());
-
-        if (employee.getId() != null) {
-            params.add(employee.getId());
-        }
-
-        return params;
-    }
-
-    @Override
-    protected EmployeeEntity constructEntity(final ResultSet resultSet, final int rowNum) {
-        try {
-            final var position = new EmployeePositionEntity(resultSet.getLong(POSITION_ID_COLUMN),
-                                                            resultSet.getString(EMPLOYEE_POSITION_NAME_COLUMN));
-            return new EmployeeEntity(resultSet.getLong(ID_COLUMN),
-                                      resultSet.getString(EMPLOYEE_FIRST_NAME_COLUMN),
-                                      resultSet.getString(EMPLOYEE_SURNAME_COLUMN),
-                                      position);
-        } catch (final SQLException e) {
-            LOGGER.error("Exception during extracting data from JDBC result set, message: {}", e.getMessage());
-            LOGGER.debug("Exception during extracting data from JDBC result set", e);
-            throw new SpringJdbcRepositoryException("Exception during extracting data from JDBC result set, message: {0}", e.getMessage());
-        }
-    }
-
-    @Override
-    protected EmployeeEntity constructSavedEntity(final Long id, final EmployeeEntity saved) {
-        return new EmployeeEntity(id, saved.getFirstName(), saved.getSurname(), saved.getPositionEntity());
     }
 }
