@@ -31,13 +31,13 @@ public class SpringJdbcModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public DataSource dataSource(final HikariConfig config) {
+    public DataSource provideDataSource(final HikariConfig config) {
         return new HikariDataSource(config);
     }
 
     @Provides
     @Singleton
-    public JdbcTemplate jdbcTemplate(final DataSource dataSource) {
+    public JdbcTemplate provideJdbcTemplate(final DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 

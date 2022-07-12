@@ -25,13 +25,13 @@ public class EclipseLinkModule extends AbstractModule {
     private static final String ENV_DATASOURCE_PASSWORD_KEY = "POSTGRES_PASSWORD";
 
     @Provides
-    public EntityManagerFactory entityManagerFactory() {
-        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, dataSource());
+    public EntityManagerFactory provideEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, provideDataSource());
     }
 
     @Provides
     @Singleton
-    public EntityManager entityManager(final EntityManagerFactory entityManagerFactory) {
+    public EntityManager provideEntityManager(final EntityManagerFactory entityManagerFactory) {
         return entityManagerFactory.createEntityManager();
     }
 
@@ -45,7 +45,7 @@ public class EclipseLinkModule extends AbstractModule {
         super.bind(EmployeeRepository.class).to(EmployeeEclipseLinkRepository.class);
     }
 
-    private Map<String, String> dataSource() {
+    private Map<String, String> provideDataSource() {
         final var dataSource = new HashMap<String, String>();
 
         dataSource.put(JDBC_URL_KEY, System.getenv(ENV_DATASOURCE_URL_KEY));

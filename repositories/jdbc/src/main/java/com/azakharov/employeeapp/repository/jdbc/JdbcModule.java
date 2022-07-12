@@ -30,7 +30,7 @@ public class JdbcModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public DataSource dataSource(final HikariConfig hikariConfig) {
+    public DataSource provideDataSource(final HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
