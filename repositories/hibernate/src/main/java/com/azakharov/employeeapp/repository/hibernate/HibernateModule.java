@@ -14,18 +14,18 @@ public class HibernateModule extends AbstractModule {
     private static final String JDBC_USERNAME_KEY = "hibernate.connection.username";
     private static final String JDBC_PASSWORD_KEY = "hibernate.connection.password";
 
-    private static final String ENV_DATASOURCE_URL_KEY = "SPRING_DATASOURCE_URL";
-    private static final String ENV_DATASOURCE_USERNAME_KEY = "POSTGRES_USER";
-    private static final String ENV_DATASOURCE_PASSWORD_KEY = "POSTGRES_PASSWORD";
+    private static final String ENV_DATASOURCE_URL = System.getenv("SPRING_DATASOURCE_URL");
+    private static final String ENV_DATASOURCE_USERNAME = System.getenv("POSTGRES_USER");
+    private static final String ENV_DATASOURCE_PASSWORD = System.getenv("POSTGRES_PASSWORD");
 
     @Provides
     @Singleton
     public Configuration provideHibernateConfiguration() {
         final var configuration = new Configuration();
 
-        configuration.setProperty(JDBC_URL_KEY, System.getenv(ENV_DATASOURCE_URL_KEY));
-        configuration.setProperty(JDBC_USERNAME_KEY, System.getenv(ENV_DATASOURCE_USERNAME_KEY));
-        configuration.setProperty(JDBC_PASSWORD_KEY, System.getenv(ENV_DATASOURCE_PASSWORD_KEY));
+        configuration.setProperty(JDBC_URL_KEY, ENV_DATASOURCE_URL);
+        configuration.setProperty(JDBC_USERNAME_KEY, ENV_DATASOURCE_USERNAME);
+        configuration.setProperty(JDBC_PASSWORD_KEY, ENV_DATASOURCE_PASSWORD);
 
         return configuration.configure();
     }

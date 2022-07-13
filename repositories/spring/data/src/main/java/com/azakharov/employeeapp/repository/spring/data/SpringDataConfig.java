@@ -21,17 +21,17 @@ public class SpringDataConfig {
 
     private static final String ENTITY_PACKAGE = "com.azakharov.employeeapp.repository.jpa.entity";
 
-    private static final String ENV_DATASOURCE_URL_KEY = "SPRING_DATASOURCE_URL";
-    private static final String ENV_DATASOURCE_USERNAME_KEY = "POSTGRES_USER";
-    private static final String ENV_DATASOURCE_PASSWORD_KEY = "POSTGRES_PASSWORD";
+    private static final String ENV_DATASOURCE_URL = System.getenv("SPRING_DATASOURCE_URL");
+    private static final String ENV_DATASOURCE_USERNAME = System.getenv("POSTGRES_USER");
+    private static final String ENV_DATASOURCE_PASSWORD = System.getenv("POSTGRES_PASSWORD");
 
     @Bean
     public HikariConfig hikariConfig() {
         final var hikariConfig = new HikariConfig();
 
-        hikariConfig.setJdbcUrl(System.getenv(ENV_DATASOURCE_URL_KEY));
-        hikariConfig.setUsername(System.getenv(ENV_DATASOURCE_USERNAME_KEY));
-        hikariConfig.setPassword(System.getenv(ENV_DATASOURCE_PASSWORD_KEY));
+        hikariConfig.setJdbcUrl(ENV_DATASOURCE_URL);
+        hikariConfig.setUsername(ENV_DATASOURCE_USERNAME);
+        hikariConfig.setPassword(ENV_DATASOURCE_PASSWORD);
 
         return hikariConfig;
     }
