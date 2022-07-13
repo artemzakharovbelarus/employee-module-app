@@ -26,6 +26,20 @@ services:
     networks:
       - employee-app-network
 
+  rabbitmq-employee-app:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq-employee-app
+    env_file:
+      - .env
+    ports:
+      - 5671:5672
+      - 15671:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - employee-app-network
+
 volumes:
   db-data:
     driver: local

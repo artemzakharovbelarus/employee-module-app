@@ -1,0 +1,6 @@
+group 'com.azakharov.employeeapp.email.rabbitmq'
+version '1.0.0'
+
+dependencies {
+    implementation group: 'com.rabbitmq', name: 'amqp-client', version: '5.15.0'
+}
