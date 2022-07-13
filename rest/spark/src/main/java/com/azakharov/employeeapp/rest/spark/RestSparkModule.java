@@ -58,13 +58,11 @@ public class RestSparkModule extends AbstractModule {
     }
 
     private void bindEmployeePositionController() {
-        super.bind(EmployeePositionService.class).to(EmployeePositionServiceImpl.class);
         super.bind(new TypeLiteral<EmployeePositionController<EmployeePositionDto, EmployeePositionView>>(){})
              .to(EmployeePositionRestController.class);
     }
 
     private void bindEmployeeController() {
-        super.bind(EmployeeService.class).to(EmployeeServiceImpl.class);
         super.bind(new TypeLiteral<EmployeeController<EmployeeDto, EmployeeView>>(){})
              .to(EmployeeRestController.class);
     }

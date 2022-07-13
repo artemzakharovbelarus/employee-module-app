@@ -46,6 +46,7 @@ public abstract class BaseJdbcRepository<E, ID> {
                           Statement.RETURN_GENERATED_KEYS).orElseThrow();
     }
 
+    @SuppressWarnings("UNCHECKED_CAST")
     protected E update(final String sql, final E entity) {
         final var params = convertEntityToParams(entity);
         processSql(sql, params, preparedStatement -> {

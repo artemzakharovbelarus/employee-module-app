@@ -46,6 +46,7 @@ public abstract class BaseHibernateRepository<E, ID> {
         find(id).ifPresentOrElse(this::processDelete, processDeletingFailing(id));
     }
 
+    @SuppressWarnings("UNCHECKED_CAST")
     private E upsert(final E entity) {
         session.getTransaction().begin();
         final var saved = session.merge(entity);
