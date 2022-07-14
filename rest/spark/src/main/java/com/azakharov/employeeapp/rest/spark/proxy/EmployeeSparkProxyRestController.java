@@ -2,7 +2,7 @@ package com.azakharov.employeeapp.rest.spark.proxy;
 
 import com.azakharov.employeeapp.api.EmployeeController;
 import com.azakharov.employeeapp.rest.dto.EmployeeDto;
-import com.azakharov.employeeapp.rest.util.JsonUtil;
+import com.azakharov.employeeapp.util.JsonUtil;
 import com.azakharov.employeeapp.rest.view.EmployeeView;
 import spark.Spark;
 

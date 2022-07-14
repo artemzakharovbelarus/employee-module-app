@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
@@ -14,21 +15,24 @@ public class EmailRabbitmqListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailRabbitmqListener.class);
 
-    private static final String RABBITMQ_URL = System.getenv("RABBITMQ_URL");
-    private static final String RABBITMQ_EMAIL_QUEUE = System.getenv("RABBITMQ_EMAIL_QUEUE");
-
+    private final String rabbitmqUrl;
+    private final String rabbitmqEmailQueue;
     private final ConnectionFactory connectionFactory;
 
     @Inject
-    public EmailRabbitmqListener(final ConnectionFactory connectionFactory) {
+    public EmailRabbitmqListener(final @Named("rabbitmq-url") String rabbitmqUrl,
+                                 final @Named("rabbitmq-email-queue") String rabbitmqEmailQueue,
+                                 final ConnectionFactory connectionFactory) {
+        this.rabbitmqUrl = rabbitmqUrl;
+        this.rabbitmqEmailQueue = rabbitmqEmailQueue;
         this.connectionFactory = connectionFactory;
     }
 
     public void receiveMessage() {
-        try (var connection = connectionFactory.newConnection(RABBITMQ_URL);
+        try (var connection = connectionFactory.newConnection(rabbitmqUrl);
              var channel = connection.createChannel()) {
 
-            channel.basicConsume(RABBITMQ_EMAIL_QUEUE, true, performDeliverCallback(), consumerTag -> {});
+            channel.basicConsume(rabbitmqEmailQueue, true, performDeliverCallback(), consumerTag -> {});
         } catch (final IOException | TimeoutException e) {
             LOGGER.error("Exception during receiving Rabbit MQ message, message: {}", e.getMessage());
             LOGGER.debug("Exception during receiving Rabbit MQ message", e);

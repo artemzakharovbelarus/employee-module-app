@@ -13,4 +13,5 @@ findProject(':repositories:spring:jdbc')?.name = 'jdbc'
 findProject(':repositories:spring:data')?.name = 'data'
 findProject(':repositories:eclipselink')?.name = 'eclipselink'
 findProject(':emails:rabbitmq')?.name = 'rabbitmq'
+include 'utils'
 

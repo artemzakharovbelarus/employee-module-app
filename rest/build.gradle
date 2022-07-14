@@ -5,6 +5,7 @@ subprojects {
     dependencies {
         implementation project(':api')
         implementation project(':services');
+        implementation project(':utils')
 
         implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     }

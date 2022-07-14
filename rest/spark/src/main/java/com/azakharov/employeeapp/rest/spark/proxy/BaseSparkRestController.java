@@ -1,7 +1,7 @@
 package com.azakharov.employeeapp.rest.spark.proxy;
 
-import com.azakharov.employeeapp.rest.util.JsonUtil;
 import com.azakharov.employeeapp.rest.view.ExceptionView;
+import com.azakharov.employeeapp.util.json.json.JsonUtil;
 import com.google.common.net.MediaType;
 import org.eclipse.jetty.http.HttpStatus;
 import spark.Route;

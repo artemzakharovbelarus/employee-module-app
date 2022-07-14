@@ -10,15 +10,10 @@ import com.azakharov.employeeapp.rest.controller.EmployeeRestController;
 import com.azakharov.employeeapp.rest.spark.exception.SparkExceptionHandler;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeePositionSparkProxyRestController;
 import com.azakharov.employeeapp.rest.spark.proxy.EmployeeSparkProxyRestController;
-import com.azakharov.employeeapp.rest.util.JsonUtil;
 import com.azakharov.employeeapp.rest.util.converter.EmployeeAllSideDomainConverter;
 import com.azakharov.employeeapp.rest.util.converter.EmployeePositionAllSideDomainConverter;
 import com.azakharov.employeeapp.rest.view.EmployeePositionView;
 import com.azakharov.employeeapp.rest.view.EmployeeView;
-import com.azakharov.employeeapp.service.employee.EmployeeService;
-import com.azakharov.employeeapp.service.employee.EmployeeServiceImpl;
-import com.azakharov.employeeapp.service.employeeposition.EmployeePositionService;
-import com.azakharov.employeeapp.service.employeeposition.EmployeePositionServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -39,7 +34,6 @@ public class RestSparkModule extends AbstractModule {
 
     private void bindJsonUtil() {
         super.bind(ObjectMapper.class);
-        super.bind(JsonUtil.class);
     }
 
     private void bindConverters() {

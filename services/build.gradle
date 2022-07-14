@@ -8,7 +8,10 @@ dependencies {
     implementation project(':repositories:spring:jdbc')
     implementation project(':repositories:spring:data')
     implementation project(':repositories:eclipselink')
+    implementation project(':utils')
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+    implementation group: 'com.rabbitmq', name: 'amqp-client', version: '5.15.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
 }

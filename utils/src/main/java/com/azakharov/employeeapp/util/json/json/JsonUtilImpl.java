@@ -1,6 +1,6 @@
-package com.azakharov.employeeapp.rest.util;
+package com.azakharov.employeeapp.util.json.json;
 
-import com.azakharov.employeeapp.rest.exception.JsonUtilException;
+import com.azakharov.employeeapp.util.json.exception.JsonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,47 +15,51 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JsonUtil {
+public class JsonUtilImpl implements JsonUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtilImpl.class);
 
     private final ObjectMapper mapper;
 
     @Inject
-    public JsonUtil(final ObjectMapper mapper) {
+    public JsonUtilImpl(final ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
+    @Override
     public String write(final Object dto) {
         try {
             return mapper.writeValueAsString(dto);
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception during writing object to JSON, message: {}", e.getMessage());
             LOGGER.debug("Exception during writing object to JSON, object: {}", dto, e);
-            throw new JsonUtilException("Exception during writing object to JSON, message: {0}", e.getMessage());
+            throw new JsonException("Exception during writing object to JSON, message: {0}", e.getMessage());
         }
     }
 
+    @Override
     public String writeAll(final List<?> dtos) {
         try {
             return mapper.writeValueAsString(dtos);
         } catch (final JsonProcessingException e) {
             LOGGER.error("Exception during writing objects to JSON, message: {}", e.getMessage());
             LOGGER.debug("Exception during writing objects to JSON, objects: {}", dtos, e);
-            throw new JsonUtilException("Exception during writing objects to JSON, message: {0}", e.getMessage());
+            throw new JsonException("Exception during writing objects to JSON, message: {0}", e.getMessage());
         }
     }
 
+    @Override
     public <DTO> DTO read(final String json, Class<DTO> dtoClass) {
         try {
             return mapper.readValue(json, dtoClass);
         } catch (final IOException e) {
             LOGGER.error("Exception during parsing JSON string, message: {}", e.getMessage());
             LOGGER.debug("Exception during parsing JSON string, JSON: {}", json, e);
-            throw new JsonUtilException("Exception during parsing JSON InputStream, message: {0}", e.getMessage());
+            throw new JsonException("Exception during parsing JSON InputStream, message: {0}", e.getMessage());
         }
     }
 
+    @Override
     public <DTO> List<DTO> readAll(final InputStream json, Class<DTO> dtoClass) {
         final var jsonStr = convertToJsonStr(json);
         try {
@@ -64,7 +68,7 @@ public class JsonUtil {
         } catch (final IOException e) {
             LOGGER.error("Exception during parsing JSON InputStream, message: {}", e.getMessage());
             LOGGER.debug("Exception during parsing JSON InputStream, JSON: {}", jsonStr, e);
-            throw new JsonUtilException("Exception during parsing JSON InputStream, message: {0}", e.getMessage());
+            throw new JsonException("Exception during parsing JSON InputStream, message: {0}", e.getMessage());
         }
     }
 

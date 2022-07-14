@@ -5,9 +5,14 @@ import com.azakharov.employeeapp.domain.EmployeePosition;
 import com.azakharov.employeeapp.domain.id.EmployeeId;
 import com.azakharov.employeeapp.repository.jpa.EmployeeRepository;
 import com.azakharov.employeeapp.repository.jpa.entity.EmployeeEntity;
+import com.azakharov.employeeapp.service.email.EmailServiceImpl;
 import com.azakharov.employeeapp.service.employeeposition.EmployeePositionService;
 import com.azakharov.employeeapp.service.exception.EmployeeServiceException;
+import com.azakharov.employeeapp.service.messagebroker.MessageBroker;
+import com.azakharov.employeeapp.service.messagebroker.dto.EmployeeMessageDto;
 import com.azakharov.employeeapp.util.converter.EmployeeBidirectionalDomainConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -20,16 +25,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     private final EmployeePositionService employeePositionService;
+    private final MessageBroker messageBroker;
 
     private final EmployeeBidirectionalDomainConverter employeeConverter;
 
     @Inject
     public EmployeeServiceImpl(final EmployeeRepository employeeRepository,
                                final EmployeePositionService employeePositionService,
-                               final EmployeeBidirectionalDomainConverter employeeConverter) {
+                               final EmployeeBidirectionalDomainConverter employeeConverter,
+                               final MessageBroker messageBroker) {
         this.employeeRepository = employeeRepository;
         this.employeePositionService = employeePositionService;
         this.employeeConverter = employeeConverter;
+        this.messageBroker = messageBroker;
     }
 
     @Override
@@ -50,7 +58,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee save(final Employee employee) {
         checkPositionOnExisting(employee.position());
 
-        return upsert(employeeRepository::save, employee);
+        final var savedEmployee = upsert(employeeRepository::save, employee);
+        sendSavedEmployeeMessage(savedEmployee);
+
+        return savedEmployee;
     }
 
     @Override
@@ -69,6 +80,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private Employee upsert(final Function<EmployeeEntity, EmployeeEntity> upsertAction, final Employee employee) {
         final var savingEntity = employeeConverter.convertToEntity(employee);
         return employeeConverter.convertToDomain(upsertAction.apply(savingEntity));
+    }
+
+    private void sendSavedEmployeeMessage(final Employee employee) {
+        final var messageDto = new EmployeeMessageDto(employee.firstName(), employee.surname(), employee.position().name());
+        messageBroker.sendEmailMessage(messageDto);
     }
 
     private void checkEmployeeOnExisting(final Employee employee) {

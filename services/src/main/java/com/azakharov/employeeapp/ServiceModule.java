@@ -7,11 +7,16 @@ import com.azakharov.employeeapp.service.employee.EmployeeService;
 import com.azakharov.employeeapp.service.employee.EmployeeServiceImpl;
 import com.azakharov.employeeapp.service.employeeposition.EmployeePositionService;
 import com.azakharov.employeeapp.service.employeeposition.EmployeePositionServiceImpl;
+import com.azakharov.employeeapp.service.messagebroker.MessageBroker;
+import com.azakharov.employeeapp.service.messagebroker.RabbitmqMessageBroker;
 import com.azakharov.employeeapp.util.converter.EmployeeBidirectionalDomainConverter;
 import com.azakharov.employeeapp.util.converter.EmployeePositionBidirectionalDomainConverter;
+import com.azakharov.employeeapp.util.json.UtilModule;
+import com.azakharov.employeeapp.util.json.json.JsonUtil;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.rabbitmq.client.ConnectionFactory;
 
 import javax.inject.Named;
 import java.util.Properties;
@@ -32,11 +37,55 @@ public class ServiceModule extends AbstractModule {
 
     private static final String ADMIN_EMAIL = System.getenv("ADMIN_EMAIL");
 
+    private static final String RABBITMQ_HOST = System.getenv("RABBITMQ_HOST");
+    private static final int RABBITMQ_PORT = Integer.parseInt(System.getenv("RABBITMQ_PORT"));
+    private static final String RABBITMQ_USERNAME = System.getenv("RABBITMQ_DEFAULT_USER");
+    private static final String RABBITMQ_PASSWORD = System.getenv("RABBITMQ_DEFAULT_PASSWORD");
+
+    private static final String RABBITMQ_URL = System.getenv("RABBITMQ_URL");
+    private static final String RABBITMQ_EMAIL_QUEUE = System.getenv("RABBITMQ_EMAIL_QUEUE");
+
+    @Provides
+    @Singleton
+    public MessageBroker provideMessageBroker(final ConnectionFactory connectionFactory,
+                                              final @Named("rabbitmq-url") String rabbitmqUrl,
+                                              final @Named("rabbitmq-email-queue") String rabbitmqEmailQueue,
+                                              final JsonUtil jsonUtil) {
+        return new RabbitmqMessageBroker(connectionFactory, rabbitmqUrl, rabbitmqEmailQueue, jsonUtil);
+    }
+
+    @Provides
+    @Singleton
+    @Named("rabbitmq-url")
+    public String provideRabbitmqUrl() {
+        return RABBITMQ_URL;
+    }
+
+    @Provides
+    @Singleton
+    @Named("rabbitmq-email-queue")
+    public String provideRabbitmqEmailQueue() {
+        return RABBITMQ_EMAIL_QUEUE;
+    }
+
     @Provides
     @Singleton
     @Named("admin-email")
     public String provideAdminEmail() {
         return ADMIN_EMAIL;
+    }
+
+    @Provides
+    @Singleton
+    public ConnectionFactory provideConnectionFactory() {
+        final var factory = new ConnectionFactory();
+
+        factory.setHost(RABBITMQ_HOST);
+        factory.setPort(RABBITMQ_PORT);
+        factory.setUsername(RABBITMQ_USERNAME);
+        factory.setPassword(RABBITMQ_PASSWORD);
+
+        return factory;
     }
 
     @Provides
@@ -55,6 +104,7 @@ public class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        super.install(new UtilModule());
         super.install(new EclipseLinkModule());
 //        super.install(new SpringDataModule());
 //        super.install(new SpringJdbcModule());
