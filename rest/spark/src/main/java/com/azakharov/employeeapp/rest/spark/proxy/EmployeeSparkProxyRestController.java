@@ -2,8 +2,8 @@ package com.azakharov.employeeapp.rest.spark.proxy;
 
 import com.azakharov.employeeapp.api.EmployeeController;
 import com.azakharov.employeeapp.rest.dto.EmployeeDto;
-import com.azakharov.employeeapp.util.JsonUtil;
 import com.azakharov.employeeapp.rest.view.EmployeeView;
+import com.azakharov.employeeapp.util.json.json.JsonUtil;
 import spark.Spark;
 
 import javax.inject.Inject;

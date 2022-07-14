@@ -5,23 +5,28 @@ import com.azakharov.employeeapp.repository.jpa.EmployeeRepository;
 import com.azakharov.employeeapp.repository.spring.data.proxy.EmployeePositionSpringDataProxyRepository;
 import com.azakharov.employeeapp.repository.spring.data.proxy.EmployeeSpringDataProxyRepository;
 import com.google.inject.AbstractModule;
-import org.springframework.beans.factory.ListableBeanFactory;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class SpringDataModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bindSpringDataRepositories(new AnnotationConfigApplicationContext(SpringDataConfig.class).getBeanFactory());
+    @Provides
+    @Singleton
+    public EmployeePositionRepository provideEmployeePositionRepository() {
+        final var positionSpringDataRepository = provideBeanFactory().getBean(EmployeePositionSpringDataRepository.class);
+        return new EmployeePositionSpringDataProxyRepository(positionSpringDataRepository);
     }
 
-    private void bindSpringDataRepositories(final ListableBeanFactory beanFactory) {
-        final var positionSpringDataRepository = beanFactory.getBean(EmployeePositionSpringDataRepository.class);
-        final var employeeSpringDataRepository = beanFactory.getBean(EmployeeSpringDataRepository.class);
+    @Provides
+    @Singleton
+    public EmployeeRepository provideEmployeeRepository() {
+        final var employeeSpringDataRepository = provideBeanFactory().getBean(EmployeeSpringDataRepository.class);
+        return new EmployeeSpringDataProxyRepository(employeeSpringDataRepository);
+    }
 
-        super.bind(EmployeePositionRepository.class)
-             .toInstance(new EmployeePositionSpringDataProxyRepository(positionSpringDataRepository));
-        super.bind(EmployeeRepository.class)
-             .toInstance(new EmployeeSpringDataProxyRepository(employeeSpringDataRepository));
+    private BeanFactory provideBeanFactory() {
+        return new AnnotationConfigApplicationContext(SpringDataConfig.class).getBeanFactory();
     }
 }

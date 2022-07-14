@@ -1,8 +1,8 @@
 package com.azakharov.employeeapp;
 
 import com.azakharov.employeeapp.repository.eclipselink.EclipseLinkModule;
-import com.azakharov.employeeapp.service.email.EmailService;
-import com.azakharov.employeeapp.service.email.EmailServiceImpl;
+import com.azakharov.employeeapp.repository.jpa.EmployeePositionRepository;
+import com.azakharov.employeeapp.repository.jpa.EmployeeRepository;
 import com.azakharov.employeeapp.service.employee.EmployeeService;
 import com.azakharov.employeeapp.service.employee.EmployeeServiceImpl;
 import com.azakharov.employeeapp.service.employeeposition.EmployeePositionService;
@@ -102,6 +102,35 @@ public class ServiceModule extends AbstractModule {
         return properties;
     }
 
+    @Provides
+    @Singleton
+    public EmployeePositionBidirectionalDomainConverter provideEmployeePositionBidirectionalDomainConverter() {
+        return new EmployeePositionBidirectionalDomainConverter();
+    }
+
+    @Provides
+    @Singleton
+    public EmployeeBidirectionalDomainConverter provideEmployeeBidirectionalDomainConverter(
+            final EmployeePositionBidirectionalDomainConverter positionConverter) {
+        return new EmployeeBidirectionalDomainConverter(positionConverter);
+    }
+
+    @Provides
+    @Singleton
+    public EmployeePositionService provideEmployeePositionService(final EmployeePositionRepository employeePositionRepository,
+                                                                  final EmployeePositionBidirectionalDomainConverter converter) {
+        return new EmployeePositionServiceImpl(employeePositionRepository, converter);
+    }
+
+    @Provides
+    @Singleton
+    public EmployeeService provideEmployeeService(final EmployeeRepository employeeRepository,
+                                                  final EmployeePositionService positionService,
+                                                  final MessageBroker messageBroker,
+                                                  final EmployeeBidirectionalDomainConverter converter) {
+        return new EmployeeServiceImpl(employeeRepository, positionService, messageBroker, converter);
+    }
+
     @Override
     protected void configure() {
         super.install(new UtilModule());
@@ -110,19 +139,5 @@ public class ServiceModule extends AbstractModule {
 //        super.install(new SpringJdbcModule());
 //        super.install(new JdbcModule());
 //        super.install(new HibernateModule());
-
-        bindDomainConverters();
-        bindServices();
-    }
-
-    private void bindDomainConverters() {
-        super.bind(EmployeeBidirectionalDomainConverter.class);
-        super.bind(EmployeePositionBidirectionalDomainConverter.class);
-    }
-
-    private void bindServices() {
-        super.bind(EmployeePositionService.class).to(EmployeePositionServiceImpl.class);
-        super.bind(EmployeeService.class).to(EmployeeServiceImpl.class);
-        super.bind(EmailService.class).to(EmailServiceImpl.class);
     }
 }

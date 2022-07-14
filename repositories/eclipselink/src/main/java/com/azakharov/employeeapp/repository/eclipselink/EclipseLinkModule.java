@@ -35,14 +35,16 @@ public class EclipseLinkModule extends AbstractModule {
         return entityManagerFactory.createEntityManager();
     }
 
-    @Override
-    protected void configure() {
-        bindEclipseLinkRepositories();
+    @Provides
+    @Singleton
+    public EmployeePositionRepository provideEmployeePositionRepository(final EntityManager entityManager) {
+        return new EmployeePositionEclipseLinkRepository(entityManager);
     }
 
-    private void bindEclipseLinkRepositories() {
-        super.bind(EmployeePositionRepository.class).to(EmployeePositionEclipseLinkRepository.class);
-        super.bind(EmployeeRepository.class).to(EmployeeEclipseLinkRepository.class);
+    @Provides
+    @Singleton
+    public EmployeeRepository provideEmployeeRepository(final EntityManager entityManager) {
+        return new EmployeeEclipseLinkRepository(entityManager);
     }
 
     private Map<String, String> provideDataSource() {

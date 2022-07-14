@@ -35,13 +35,15 @@ public class HibernateModule extends AbstractModule {
         return configuration.buildSessionFactory().openSession();
     }
 
-    @Override
-    protected void configure() {
-        bindHibernateRepositories();
+    @Provides
+    @Singleton
+    public EmployeeRepository provideEmployeeRepository(final Session session) {
+        return new EmployeeHibernateRepository(session);
     }
 
-    private void bindHibernateRepositories() {
-        super.bind(EmployeeRepository.class).to(EmployeeHibernateRepository.class);
-        super.bind(EmployeePositionRepository.class).to(EmployeePositionHibernateRepository.class);
+    @Provides
+    @Singleton
+    public EmployeePositionRepository provideEmployeePositionRepository(final Session session) {
+        return new EmployeePositionHibernateRepository(session);
     }
 }

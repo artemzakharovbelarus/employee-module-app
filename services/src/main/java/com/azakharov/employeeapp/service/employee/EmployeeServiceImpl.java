@@ -32,8 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Inject
     public EmployeeServiceImpl(final EmployeeRepository employeeRepository,
                                final EmployeePositionService employeePositionService,
-                               final EmployeeBidirectionalDomainConverter employeeConverter,
-                               final MessageBroker messageBroker) {
+                               final MessageBroker messageBroker,
+                               final EmployeeBidirectionalDomainConverter employeeConverter) {
         this.employeeRepository = employeeRepository;
         this.employeePositionService = employeePositionService;
         this.employeeConverter = employeeConverter;

@@ -41,13 +41,15 @@ public class SpringJdbcModule extends AbstractModule {
         return new JdbcTemplate(dataSource);
     }
 
-    @Override
-    protected void configure() {
-        bindSpringJdbcRepositories();
+    @Provides
+    @Singleton
+    public EmployeePositionRepository provideEmployeePositionRepository(final JdbcTemplate jdbcTemplate) {
+        return new EmployeePositionSpringJdbcRepository(jdbcTemplate);
     }
 
-    private void bindSpringJdbcRepositories() {
-        super.bind(EmployeePositionRepository.class).to(EmployeePositionSpringJdbcRepository.class);
-        super.bind(EmployeeRepository.class).to(EmployeeSpringJdbcRepository.class);
+    @Provides
+    @Singleton
+    public EmployeeRepository provideEmployeeRepository(final JdbcTemplate jdbcTemplate) {
+        return new EmployeeSpringJdbcRepository(jdbcTemplate);
     }
 }

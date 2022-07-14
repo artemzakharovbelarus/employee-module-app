@@ -44,8 +44,9 @@ public class RabbitmqEmailModule extends AbstractModule {
         return factory;
     }
 
-    @Override
-    protected void configure() {
-        super.bind(EmailRabbitmqListener.class);
+    @Provides
+    @Singleton
+    public EmailRabbitmqListener emailRabbitmqListener() {
+        return new EmailRabbitmqListener(provideRabbitmqUrl(), provideRabbitmqEmailQueue(), provideConnectionFactory());
     }
 }

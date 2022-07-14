@@ -34,13 +34,15 @@ public class JdbcModule extends AbstractModule {
         return new HikariDataSource(hikariConfig);
     }
 
-    @Override
-    protected void configure() {
-        bindJdbcRepositories();
+    @Provides
+    @Singleton
+    public EmployeePositionRepository provideEmployeePositionRepository(final DataSource dataSource) {
+        return new EmployeePositionJdbcRepository(dataSource);
     }
 
-    private void bindJdbcRepositories() {
-        super.bind(EmployeePositionRepository.class).to(EmployeePositionJdbcRepository.class);
-        super.bind(EmployeeRepository.class).to(EmployeeJdbcRepository.class);
+    @Provides
+    @Singleton
+    public EmployeeRepository provideEmployeeRepository(final DataSource dataSource) {
+        return new EmployeeJdbcRepository(dataSource);
     }
 }
